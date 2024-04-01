@@ -30,7 +30,6 @@ class ChatbotController extends Controller
     public function check()
     {
         $response = $this->gpt4AllService->healthCheck();
-
         return response()->json($response);
     }
 

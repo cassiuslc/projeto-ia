@@ -13,7 +13,7 @@ class GPT4AllService
     {
         $this->apiKey = $apiKey;
         $this->client = new Client([
-            'base_uri' => env("gpt4all.url"),
+            'base_uri' => env("GPT4ALL_URL"),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',

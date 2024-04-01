@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
     ####################################################################################################
     # PHP
     ####################################################################################################
@@ -12,6 +11,8 @@ services:
             - 3001:3000
         volumes:
             - .:/var/www:cached
+        networks:
+            - my_network
 
     ####################################################################################################
     # Nginx
@@ -26,6 +27,8 @@ services:
             - .docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         depends_on:
             - php
+        networks:
+            - my_network
 
     ####################################################################################################
     # DATABASE (MySQL)
@@ -44,6 +47,8 @@ services:
             MYSQL_DATABASE: refactorian
             MYSQL_USER: refactorian
             MYSQL_PASSWORD: refactorian
+        networks:
+            - my_network
 
     ####################################################################################################
     # phpMyAdmin
@@ -60,6 +65,8 @@ services:
             PMA_ARBITRARY: 1
         volumes:
             - .docker/phpmyadmin/sessions:/sessions
+        networks:
+            - my_network
 
     ####################################################################################################
     # Adminer
@@ -69,7 +76,9 @@ services:
         ports:
             - 9090:8080
         depends_on:
-        - db
+            - db
+        networks:
+            - my_network
 
     ####################################################################################################
     # Mailpit
@@ -77,8 +86,10 @@ services:
     mail:
         image: axllent/mailpit:latest
         ports:
-        - 8025:8025
-        - 1025:1025
+            - 8025:8025
+            - 1025:1025
+        networks:
+            - my_network
 
     ####################################################################################################
     # Redis
@@ -87,6 +98,12 @@ services:
         image: redis:latest
         command: redis-server --appendonly yes
         volumes:
-        - .docker/redis/data:/data
+            - .docker/redis/data:/data
         ports:
-        - 6379:6379
+            - 6379:6379
+        networks:
+            - my_network
+
+networks:
+    my_network:
+        driver: bridge

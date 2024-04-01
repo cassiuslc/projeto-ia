@@ -9,10 +9,19 @@
                         </div>
                         <div>
                         <span class="d-block h6 fw-normal">Detalhamento do Modelo</span>
-                        <h6 class="h6 fw-bold mb-1">mistral-7b-openorca.Q4_0</h6>
-                        <div class="small mt-2">
-                            <span class="fa-solid fa-minus text-success me-1"></span>
-                            <a href="https://huggingface.co/Open-Orca/Mistral-7B-OpenOrca">OpenOrca - Mistral - 7B - 8k</a>
+                        <h6 v-if="!loading" class="h6 fw-bold mb-1">
+                            <small v-if="data === true">mistral-7b-openorca.Q4_0</small>
+                            <small class="text-danger" v-else>Sem conexão com modelo</small>
+                        </h6>
+                        <h6 v-else class="h6 fw-bold mb-1"><Skeleton class="vf-col-12 px-xl-0" width="10rem" height="1rem"></Skeleton></h6>
+                        <div v-if="!loading" class="small mt-2">
+                            
+                            <span v-if="data === true" class="fa-solid fa-minus text-success me-1"></span>
+                            <a v-if="data === true" href="https://huggingface.co/Open-Orca/Mistral-7B-OpenOrca">OpenOrca - Mistral - 7B - 8k</a>
+                            <small class="text-danger"v-else>Falha ao obter modelo</small>
+                        </div>
+                        <div v-else class="small mt-2">
+                            <Skeleton class="vf-col-12 px-xl-0" width="10rem" height="1rem"></Skeleton>
                         </div>
                         </div>
                     </div>
@@ -26,10 +35,22 @@
                         </div>
                         <div>
                         <span class="d-block h6 fw-normal">Status API</span>
-                        <h6 class="h6 fw-bold mb-1"><a href="http://localhost:4891/docs">http://localhost:4891</a></h6>
-                        <div class="small mt-2">
-                            <span class="fa-solid fa-circle-check text-success me-1"></span>
-                            <span class="text-success fw-bold">Online</span>
+                        <h6 v-if="!loading" class="h6 fw-bold mb-1">
+                            <a :class="{ 'text-danger': data === false }" href="http://localhost:4891/docs">http://localhost:4891</a>
+                        </h6>
+                        <h6 v-else class="h6 fw-bold mb-1"><Skeleton class="vf-col-12 px-xl-0" width="10rem" height="1rem"></Skeleton></h6>
+                        <div v-if="!loading" class="small mt-2">
+                            <st v-if="data === true">
+                                <span class="fa-solid fa-circle-check text-success me-1"></span>
+                                <span class="text-success fw-bold">Online</span>
+                            </st>
+                            <st v-else>
+                                <span class="fa-solid fa-circle-down text-danger me-1"></span>
+                                <span class="text-danger fw-bold">Offline</span>
+                            </st>
+                        </div>
+                        <div v-else class="small mt-2">
+                            <Skeleton class="vf-col-12 px-xl-0" width="10rem" height="1rem"></Skeleton>
                         </div>
                         </div>
                     </div>
@@ -38,7 +59,7 @@
             </div>
             <div class="card border-gray-300">
             <div class="card-body d-block d-md-flex align-items-center">
-            <table class="table table-hover">
+            <table v-if="!loading" class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -51,29 +72,23 @@
                         <th scope="row">1</th>
                         <td>
                             <div class="d-flex align-items-center">
-                                Jackson <span class="badge badge-primary ml-2">Pro</span>
+                                False or True
                             </div>
                         </td>
-                        <td>Larry</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                Jacob <span class="badge badge-secondary ml-2">Mid</span>
-                            </div>
-                        </td>
-                        <td>Thornton</td>
+                        <td>XX/XX/XXXX</td>
                     </tr>
                 </tbody>
             </table>
+            <div v-else>
+                <Skeleton class="vf-col-12 px-xl-0" width="40rem" height="10rem"></Skeleton>
+            </div>
         </div>
         </div>
         </div>
-        {{  data }}
 </template>
 <script>
 import { useToast } from "vue-toastification";
+
 export default {
     data() {
         return {
@@ -89,7 +104,7 @@ export default {
         async getDataStatus() {
             try {
                 this.loading = true;
-                const response = await axios.get(`http://localhost:4891/v1/health/`);
+                const response = await axios.get(`http://localhost/api/bot/check`);
                 this.data = response.data;
                 this.loading = false;
                 return this.data;
