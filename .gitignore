@@ -17,3 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+resources/css/pixel.css.map
+resources/css/app.css
+resources/css/app.css
