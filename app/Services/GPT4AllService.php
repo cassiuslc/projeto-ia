@@ -71,12 +71,13 @@ class GPT4AllService
     public function healthCheck()
     {
         try {
-            $response = $this->client->get('/v1/health');
+            $response = $this->client->get('/v1/health', ['timeout' => 10]);
             return $response->getStatusCode() === 200;
         } catch (\Exception $e) {
             return false;
         }
     }
+
 
 }
 

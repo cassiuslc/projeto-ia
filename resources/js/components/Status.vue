@@ -10,14 +10,14 @@
                         <div>
                         <span class="d-block h6 fw-normal">Detalhamento do Modelo</span>
                         <h6 v-if="!loading" class="h6 fw-bold mb-1">
-                            <small v-if="data === true">mistral-7b-openorca.Q4_0</small>
+                            <small v-if="data === true">Nous-Hermes-2-Mistral-7B-DPO</small>
                             <small class="text-danger" v-else>Sem conexão com modelo</small>
                         </h6>
                         <h6 v-else class="h6 fw-bold mb-1"><Skeleton class="vf-col-12 px-xl-0" width="10rem" height="1rem"></Skeleton></h6>
                         <div v-if="!loading" class="small mt-2">
                             
                             <span v-if="data === true" class="fa-solid fa-minus text-success me-1"></span>
-                            <a v-if="data === true" href="https://huggingface.co/Open-Orca/Mistral-7B-OpenOrca">OpenOrca - Mistral - 7B - 8k</a>
+                            <a v-if="data === true" href="https://huggingface.co/NousResearch">NousResearch</a>
                             <small class="text-danger"v-else>Falha ao obter modelo</small>
                         </div>
                         <div v-else class="small mt-2">
@@ -72,10 +72,10 @@
                         <th scope="row">1</th>
                         <td>
                             <div class="d-flex align-items-center">
-                                False or True
+                                {{ data }}
                             </div>
                         </td>
-                        <td>XX/XX/XXXX</td>
+                        <td>{{ now() }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -101,6 +101,22 @@ export default {
         this.getDataStatus();
     },
     methods: {
+        now() {
+            const today = new Date();
+            let dd = today.getDate();
+            let mm = today.getMonth() + 1; // Adiciona 1 ao mês, pois Janeiro é 0
+            const yyyy = today.getFullYear();
+
+            // Adiciona um zero na frente, se o dia ou mês for menor que 10
+            if (dd < 10) {
+            dd = '0' + dd;
+            }
+            if (mm < 10) {
+            mm = '0' + mm;
+            }
+
+            return dd + '/' + mm + '/' + yyyy;
+        },
         async getDataStatus() {
             try {
                 this.loading = true;
