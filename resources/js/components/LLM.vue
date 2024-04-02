@@ -117,7 +117,7 @@ export default {
                         this.falha = true;
                         this.submit = false;
                     if (error.response.data && error.response.data.error.mensagem) {
-                      this.toast.info("[Erro " + error.response.status + "]: " + error.response.data.error.mensagem[0] + ".");
+                      this.toast.info("[Erro " + error.response.status + "]: " + error.response.data.error.mensagem[0]);
                     }else if (error.response.data && error.response.data.error) {
                       this.toast.info("[Erro " + error.response.status + "]: " + error.response.data.error + ".");
                     } else {
