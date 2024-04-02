@@ -22,20 +22,16 @@ class GPT4AllService
         ]);
     }
 
-    public function completeChat($messages, $model = 'mistral-7b-openorca.Q4_0', $temperature = 0.18)
+    public function completeChat($json)
     {
         $response = $this->client->post('/v1/chat/completions', [
-            'json' => [
-                'model' => $model,
-                'messages' => $messages,
-                'temperature' => $temperature,
-            ],
+            'json' => $json
         ]);
 
         return json_decode($response->getBody(), true);
     }
 
-    public function complete($prompt, $model = 'mistral-7b-openorca.Q4_0', $maxTokens = 50, $temperature = 0.18, $topP = 1.0, $topK = 50, $n = 1, $stream = false, $repeatPenalty = 1.18)
+    public function complete($prompt, $model = 'Nous-Hermes-2-Mistral-7B-DPO.Q4_0', $maxTokens = 50, $temperature = 0.18, $topP = 1.0, $topK = 50, $n = 1, $stream = false, $repeatPenalty = 1.18)
     {
         $response = $this->client->post('/v1/completions', [
             'json' => [

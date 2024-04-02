@@ -16,4 +16,5 @@ Route::group([
     Route::get('/historico', [ChatbotController::class, 'exibirHistorico'])->name('bot.historico');
     Route::post('/inserir', [ChatbotController::class, 'inserirMensagem'])->name('bot.msg');
     Route::delete('/reset', [ChatbotController::class, 'resetarHistorico'])->name('bot.reset');
+    Route::get('/test', [ChatbotController::class, 'interacaoLLM'])->name('bot.test');
 });

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\GPT4AllService;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Expr\FuncCall;
 
 class ChatbotController extends Controller
 {
@@ -94,6 +95,8 @@ class ChatbotController extends Controller
         // Armazenar o novo histórico no Redis
         Redis::set('historico', json_encode($historico));
 
+        $this->interacaoLLM();
+
         return response()->json(['message' => 'Mensagem adicionada ao histórico com sucesso!']);
     }
 
@@ -104,6 +107,78 @@ class ChatbotController extends Controller
 
         return response()->json(['message' => 'Histórico resetado com sucesso!']);
     }
+
+    public function interacaoLLM()
+    {
+        // Obter as mensagens atuais do histórico
+        $historico = Redis::get('historico');
+
+        if (!$historico) {
+            $historico = [];
+        } else {
+            $historico = json_decode($historico, true);
+        }
+
+        $data = [
+            'model' => "Nous-Hermes-2-Mistral-7B-DPO.Q4_0",
+            'messages' => $this->createMsgByContext(), // Adicionar mensagens existentes ao contexto
+            'temperature' => 0.18,
+        ];
+
+        $resposta = $this->gpt4AllService->completeChat($data);
+
+        // Verificar se a resposta foi bem-sucedida e se há uma mensagem do assistente
+        if (isset($resposta['choices'][0]['message']) && $resposta['choices'][0]['message']['role'] === 'assistant') {
+            $novaMensagem = [
+                'ator' => 'assistant',
+                'mensagem' => $resposta['choices'][0]['message']['content'],
+                'timestamp' => time(),
+            ];
+
+            // Adicionar a nova mensagem ao histórico
+            $historico[] = $novaMensagem;
+
+            // Armazenar o novo histórico no Redis
+            Redis::set('historico', json_encode($historico));
+        }
+    }
+
+    public function createMsgByContext()
+    {
+        // Obter o histórico do Redis
+        $historico = Redis::get('historico');
+
+        if (!$historico) {
+            $historico = [];
+        } else {
+            $historico = json_decode($historico, true);
+        }
+
+        // Array para armazenar as mensagens formatadas
+        $mensagensFormatadas = [];
+
+        // Adicionar mensagem do sistema
+        $mensagemSistema = [
+            "role" => "system",
+            "content" => "Você é um assistente útil em assuntos jurídicos relacionados à defesa do consumidor."
+        ];
+
+        $mensagensFormatadas[] = $mensagemSistema;
+
+        foreach ($historico as $msg) {
+            $role = $msg['ator'] === 'user' ? 'user' : 'assistant';
+
+            $mensagemFormatada = [
+                "role" => $role,
+                "content" => $msg['mensagem'],
+            ];
+
+            $mensagensFormatadas[] = $mensagemFormatada;
+        }
+
+        return $mensagensFormatadas;
+    }
+
 
 
     

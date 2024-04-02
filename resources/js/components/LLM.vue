@@ -54,7 +54,7 @@
           <p class="m-0"> <Skeleton class="vf-col-12 px-xl-0" width="30rem" height="3rem"></Skeleton></p>
         </div>
   </div>
-        <textarea v-model="msg" class="form-control border border-gray-300-gray mb-4" id="message" placeholder="Sua menssagem" :disabled="submit" rows="6" maxlength="1000" required=""></textarea>
+        <textarea v-model="msg" class="form-control border border-gray-300-gray mb-4 mt-2" id="message" placeholder="Sua menssagem" :disabled="submit" rows="6" maxlength="1000" required=""></textarea>
         <div class="d-flex justify-content-between align-items-center mt-3">
           <div>
             <FontAwesomeIcon icon="fa-brands fa-twitter" />
