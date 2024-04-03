@@ -24,8 +24,7 @@ Este repositório apresenta um projeto educacional desenvolvido para uma apresen
 
 ## Demonstração
 
-[![Watch the video]()](https://youtu.be/A3f-5aWUE-c)
-
+https://github.com/cassiuslc/projeto-ia/assets/51304545/9c684c82-0192-4ddf-b0d6-f410312788c0
 
 ## Instalação
 
