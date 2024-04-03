@@ -168,6 +168,21 @@ Este projeto serve como um exemplo educacional para demonstrar a integração de
 
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/cassiuslc)
 
+### Referências dos Projetos de Terceiros
+
+1. **Projeto GPT-4 All (API REST de LLM):**
+   
+   - Repositório: [GitHub - nomic-ai/gpt4all](https://github.com/nomic-ai/gpt4all)
+
+2. **Modelo usado como exemplo GPT-4 All (Nous-Hermes-2-Mistral-7B-DPO):**
+   
+   - Hugging Face Model: [Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf](https://huggingface.co/NousResearch/Nous-Hermes-2-Mistral-7B-DPO-GGUF/blob/main/Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf)
+
+3. **Font Awesome (Ícones):**
+   
+   - Site: [Font Awesome](https://fontawesome.com/)
+
+
 
 ## Licença
 
